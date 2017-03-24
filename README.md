@@ -130,7 +130,25 @@ arr3.__proto__;
 ```
 
 
+
+## References
+
+* https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch6.md
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 ## Identify and list own properties
+
+Below are varius reports about compound subtypes and properties that are found on the subtype object itself.
+
 
 ## Object
 
@@ -160,6 +178,8 @@ Object.prototype.toString.call(Object.prototype);
 // "[object Object]"
 ```
 
+
+
 ## Function
 
 ### **Function()**
@@ -187,6 +207,8 @@ Object.getOwnPropertyNames(Function.prototype);
 Object.prototype.toString.call(Function.prototype);
 // "[object Function]"
 ```
+
+
 
 ## Array
 
@@ -249,7 +271,7 @@ Object.prototype.toString.call(String);
 String.prototype;
 // String {length: 0, constructor: function, charAt: function, charCodeAt: function, endsWith: function…} (id:8)
 String.prototype.__proto__;
-// Object {} (id:1)
+// Object {} (1 on the diagram)
 Object.getOwnPropertyNames(String.prototype);
 // ["length", "constructor", "charAt", "charCodeAt", "endsWith", "includes", "indexOf", "lastIndexOf", "localeCompare", "normalize", "substr", "substring", "startsWith", "toString", "trim", "trimLeft", "trimRight", "valueOf", "codePointAt", "concat", "match", "repeat", "replace", "search", "slice", "split", "toLowerCase", "toLocaleLowerCase", "toUpperCase", "toLocaleUpperCase", "link", "anchor", "fontcolor", "fontsize", "big", "blink", "bold", "fixed", "italics", "small", "strike", "sub", "sup", "padStart", "padEnd"]
 Object.prototype.toString.call(String.prototype);
@@ -257,7 +279,125 @@ Object.prototype.toString.call(String.prototype);
 ```
 
 
-# References
+## Number
 
-* https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch6.md
-* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
+### **Number()**
+
+```js
+Number;
+// function Number() { [native code] }
+Number.__proto__;
+// function () { [native code] } (2)
+Object.getOwnPropertyNames(Number);
+// ["length", "name", "arguments", "caller", "prototype", "isFinite", "isInteger", "isNaN", "isSafeInteger", "parseFloat", "parseInt", "MAX_VALUE", "MIN_VALUE", "NaN", "NEGATIVE_INFINITY", "POSITIVE_INFINITY", "MAX_SAFE_INTEGER", "MIN_SAFE_INTEGER", "EPSILON"]
+Object.prototype.toString.call(Number);
+// "[object Function]"
+```
+
+### **Number.prototype**
+
+```js
+Number.prototype;
+// Number {constructor: function, toExponential: function, toFixed: function, toPrecision: function, toString: function…}
+Number.prototype.__proto__;
+// Object {} (#1 on the diagram)
+Object.getOwnPropertyNames(Number.prototype);
+// ["constructor", "toExponential", "toFixed", "toPrecision", "toString", "valueOf", "toLocaleString"]
+Object.prototype.toString.call(Number.prototype);
+// "[object Number]"
+```
+
+
+## Boolean
+
+### **Boolean()**
+
+```js
+Boolean;
+// function Boolean() { [native code] }
+Boolean.__proto__;
+// function () { [native code] } (2)
+Object.getOwnPropertyNames(Boolean);
+// ["length", "name", "arguments", "caller", "prototype"]
+Object.prototype.toString.call(Boolean);
+// "[object Function]"
+```
+
+### **Boolean.prototype**
+
+```js
+Boolean.prototype;
+// Boolean {[[PrimitiveValue]]: false, constructor: function, toString: function, valueOf: function}
+Boolean.prototype.__proto__;
+// Object {} (#1 on the diagram)
+Object.getOwnPropertyNames(Boolean.prototype);
+// ["constructor", "toString", "valueOf"]
+Object.prototype.toString.call(Boolean.prototype);
+// "[object Boolean]"
+```
+
+
+## RegExp
+
+Here is a slightly different situation: in Firefox, `RegExp.prototype` is of subtype "[object RegExp]", which is expected and in line with other subtypes, but Chrome (version 57.0.2987.110 64-bit) logs "[object Object]".
+
+### **RegExp()**
+
+```js
+RegExp;
+// function RegExp() { [native code] }
+RegExp.__proto__;
+// function () { [native code] } (2)
+Object.getOwnPropertyNames(RegExp);
+// ["length", "name", "arguments", "caller", "prototype", "input", "$_", "lastMatch", "$&", "lastParen", "$+", "leftContext", "$`", "rightContext", "$'", "$1", "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9"]
+Object.prototype.toString.call(RegExp);
+// "[object Function]"
+```
+
+### **RegExp.prototype**
+
+```js
+RegExp.prototype;
+// Object {constructor: function, exec: function…}
+RegExp.prototype.__proto__;
+// Object {} (#1 on the diagram)
+Object.getOwnPropertyNames(RegExp.prototype);
+// ["constructor", "exec", "flags", "global", "ignoreCase", "multiline", "source", "sticky", "unicode", "compile", "toString", "test"]
+Object.prototype.toString.call(RegExp.prototype);
+// "[object Object]" (chrome)
+// "[object RegExp]" (firefox)
+```
+
+
+## Date
+
+The situation with `Date.prototype` is again different than before: now both, Chrome and Firefox log "[object Object]", instead of the expected "[object Date]", which is what is reported in Edge (v.14).
+
+
+### **Date()**
+
+```js
+Date;
+// function Date() { [native code] }
+Date.__proto__;
+// function () { [native code] } (2)
+Object.getOwnPropertyNames(Date);
+// ["length", "name", "arguments", "caller", "prototype", "now", "parse", "UTC"]
+Object.prototype.toString.call(Date);
+// "[object Function]"
+```
+
+### **Date.prototype**
+
+```js
+Date.prototype;
+// Object {constructor: function, toString: function, toDateString: function, toTimeString: function, toISOString: function…}
+Date.prototype.__proto__;
+// Object {} (#1 on the diagram)
+Object.getOwnPropertyNames(Date.prototype);
+// ["constructor", "toString", "toDateString", "toTimeString", "toISOString", "toUTCString", "toGMTString", "getDate", "setDate", "getDay", "getFullYear", "setFullYear", "getHours", "setHours", "getMilliseconds", "setMilliseconds", "getMinutes", "setMinutes", "getMonth", "setMonth", "getSeconds", "setSeconds", "getTime", "setTime", "getTimezoneOffset", "getUTCDate", "setUTCDate", "getUTCDay", "getUTCFullYear", "setUTCFullYear", "getUTCHours", "setUTCHours", "getUTCMilliseconds", "setUTCMilliseconds", "getUTCMinutes", "setUTCMinutes", "getUTCMonth", "setUTCMonth", "getUTCSeconds", "setUTCSeconds", "valueOf", "getYear", "setYear", "toJSON", "toLocaleString", "toLocaleDateString", "toLocaleTimeString"]
+Object.prototype.toString.call(Date.prototype);
+// "[object Object]" // chrome
+// "[object Object]" // firefox
+// "[object Date]" // edge
+```
