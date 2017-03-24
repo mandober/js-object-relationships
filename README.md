@@ -53,7 +53,7 @@ Object.prototype.toString.call(Object.prototype);
 // "[object Function]"
 ```
 
-Another special pair is constructor function `Function`(4) and function referred to as `Function.prototype`(2). What is special is that every constructor function (and any user created function) will have its proto link point to `Function.prototype`(2). And all function's prototype objects will point to `Object.prototype`(1). So this is the only pair where a constructor function has a proto link pointing to its prototype function (`Function.prototype`).
+Another special pair is constructor function `Function`(4) and function referred to as `Function.prototype`(2). What is special is that every constructor function (and any user created function) will have its proto link point to `Function.prototype`(2). And all constructor function's prototype objects will point to `Object.prototype`(1). So this is the only pair where a constructor function has a proto link pointing to its prototype function (`Function.prototype`).
 
 ```js
 Function === Function.prototype.constructor;
@@ -74,7 +74,8 @@ All relationships between objects can be manipulated by a user. Common manipulat
 
 * `Object.setPrototypeOf(srcObj, destObj)` method sets the prototype (i.e. the internal [[Prototype]] property) of a source object to destination object (or null).
 
-* Manipulating `__proto__` property:
+* By manipulating `__proto__` property.
+
 ```js
 var objProto = {a:1};
 var obj = {__proto__:objProto};
@@ -96,13 +97,13 @@ unlinked;
 
 ## Creation of new objects
 
-New proper object (object Object) can be created in several ways:
+A proper object (object Object) can be created in several ways:
 
-* When a function is created (a), its prototype object (b) is also created. Every function has a prototype/constructor relationship with its object. Function is prototype linked to `Function.prototype` object; that prototype object is linked to `Object.prototype`. This is somewhat special object with a different purpose than objects that are user created:
+* When a (any) function is created (a), its prototype object (b) is also created. Every function has a prototype/constructor relationship with its object. Function itself will be prototype linked to `Function.prototype` object; its prototype object will be prototype linked to `Object.prototype`.
 
-* When an object is created with constructor call to a user created function `var obj = new Fun()`(c) it gets prototype linked to function's prototype object (b).
+* An object is created with constructor call to a user created function `var obj = new Fun()`(c). When created this way, that object gets prototype linked to function's prototype object (b).
 
-* Calling object constructor function `obj = new Object()` or just calling the constructor without the `new` keyword `obj = Object()`.
+* Calling the object constructor function `obj = new Object()` or just calling the constructor without the `new` keyword `obj = Object()`.
 
 * Using the function `Object.create()`.
 
