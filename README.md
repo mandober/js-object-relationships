@@ -3,7 +3,7 @@
 Diagram of relationships between compound types in JS:
 
 
-<img src="https://mandober.github.com/js-object-relationships/js-rel.jpg" alt="JS Object Relationships">
+<img src="https://github.com/mandober/js-object-relationships/blob/master/js-rel.jpg?raw=true" alt="JS Object Relationships">
 
 
 Complex or compound types are object, function, string, array, regexp, number, date, etc. In fact, all complex types are a subtypes of the type object. Every complex type has its eponymous constructor function:
