@@ -171,6 +171,12 @@ Additions to the ECMAScript core for language-sensitive functionalities.
 **Non-standard objects**   
 `Iterator, ParallelArray, StopIteration`   
 
+**Other objects**   
+`arguments`   
+
+
+
+
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
