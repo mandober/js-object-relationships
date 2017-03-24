@@ -97,6 +97,7 @@ unlinked;
 
 ## Creation of new objects
 
+**Object**   
 A proper object (object Object) can be created in several ways:
 
 * When a new function is declared (a), its prototype object (b) is also created. Every function has a prototype/constructor relationship with its object. Function itself will be prototype linked to `Function.prototype`(2) object; its prototype object will be prototype linked to `Object.prototype`(1).
@@ -109,11 +110,7 @@ A proper object (object Object) can be created in several ways:
 
 * Using object literal form `obj = {}`.
 
-
-## Creation of object's subtypes
-
-### **Array**
-
+**Array**   
 Whether a new array is created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (d) is prototype linked to `Array.prototype` (6). It is similar with other compound (sub)types.
 
 ```js
@@ -129,24 +126,59 @@ arr3.__proto__;
 // [constructor: function, toString: function, join: function, pop: function…] (6)
 ```
 
-
-
-## References
-
-* https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch6.md
-* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
-
-
-
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-## Identify and list own properties
 
-Below are varius reports about compound subtypes and properties that are found on the subtype object itself.
+# Standard built-in objects
+
+**Fundamental objects:**   
+`Object, Function, Boolean, Symbol, Number, Math, Date, String, RegExp`
+
+**Error objects:**   
+`Error, EvalError, InternalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError`
+
+**Indexed collections**   
+`Array, Int8Array, Uint8Array, Uint8ClampedArray, Int16Array, Uint16Array, Int32Array, Uint32Array, Float32Array, Float64Array`   
+These objects represent collections of data which are ordered by an index value. This includes (typed) arrays and array-like constructs.
+
+**Keyed collections**   
+`Map, Set, WeakMap, WeakSet`   
+These objects represent collections which use keys; these contain elements which are iterable in the order of insertion.
+
+**Vector collections**   
+`SIMD, SIMD.Float32x4, SIMD.Float64x2, SIMD.Int8x16, SIMD.Int16x8, SIMD.Int32x4, SIMD.Uint8x16, SIMD.Uint16x8, SIMD.Uint32x4, SIMD.Bool8x16, SIMD.Bool16x8, SIMD.Bool32x4, SIMD.Bool64x2`   
+SIMD vector data types are objects where data is arranged into lanes.
+
+**Structured data**   
+`ArrayBuffer, SharedArrayBuffer, Atomics, DataView, JSON`   
+These objects represent and interact with structured data buffers and data coded using JavaScript Object Notation (JSON).
+
+**Control abstraction objects**   
+`Promise, Generator, GeneratorFunction, AsyncFunction`
+
+**Reflection**   
+`Reflect, Proxy`
+
+**Internationalization**   
+`Intl, Intl.Collator, Intl.DateTimeFormat, Intl.NumberFormat`   
+Additions to the ECMAScript core for language-sensitive functionalities.
+
+**WebAssembly**   
+`WebAssembly, WebAssembly.Module, WebAssembly.Instance, WebAssembly.Memory, WebAssembly.Table, WebAssembly.CompileError, WebAssembly.LinkError, WebAssembly.RuntimeError`
+
+**Non-standard objects**   
+`Iterator, ParallelArray, StopIteration`   
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+# Compound types: identify and list own properties
+
+Below are varius reports about compound subtypes and their own properties.
 
 
 ## Object
@@ -400,3 +432,19 @@ Object.prototype.toString.call(Date.prototype);
 // "[object Object]" // firefox
 // "[object Date]" // edge
 ```
+
+
+
+<p>&nbsp;</p>
+
+
+# References
+
+* https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch6.md
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
+
+
+<p>&nbsp;</p>
+<hr>
+<small>Relationships between objects in JS (March, 2017)</small>
+<p>&nbsp;</p>
