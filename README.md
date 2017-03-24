@@ -135,16 +135,15 @@ arr3.__proto__;
 
 * https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch6.md
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
 ## Identify and list own properties
 
 Below are varius reports about compound subtypes and properties that are found on the subtype object itself.
