@@ -1,10 +1,11 @@
 # Relationships between objects in JS
 
-Diagram of relationships between compound types in JS:
+Diagram of relationships between (some) compound types in JS:
 
 
 <img src="https://github.com/mandober/js-object-relationships/blob/master/js-rel.jpg?raw=true" alt="JS Object Relationships">
 
+Red fat arrows are `[[Prototype]]` i.e. `__proto__` links (properties).
 
 Complex or compound types are object, function, string, array, regexp, number, date, etc. In fact, all complex types are a subtypes of the type object. Every complex type has its eponymous constructor function:
 * `function Object()`
@@ -32,14 +33,15 @@ A link is a hidden private property of an object known as `[[Prototype]]`. Altho
 
 Namely, if an object is queried for a property (`obj.propName`) and it doesn't have its own property by that name, its `[[Prototype]]` i.e. `__proto__` link is followed to the next object, which is queried for that property, and so on to the next linked object, until such property is found. Object `Object.prototype` (1) is the final link in the prototype chain and if it doesn't have that property, the search is over and `undefined` is returned. The same goes for both, properties and methods.
 
-In fact, `__proto__` is not a property found on every object - it is located only on `Object.prototype` (1) (and it is not really a property, but a pair of get/set methods), but since `Object.prototype` is at the end of the prototype chain, all other objects have access to `__proto__` property/method, just by following the prototype links.
+In fact, `__proto__` is not a property found on every object - it is located only on `Object.prototype` (1) (and it is not really a property, but a pair of get/set methods), but since `Object.prototype` is at the end of the prototype chain, all other objects have access to `__proto__` property/method, just by following the prototype links.   
 
-> All roads lead (and end) to `Object.prototype`.
-
-A very useful function for examination of an object's own properties (properties found on the object itself, not by following the prototype chain) is `getOwnPropertyNames()`. This method lives on function object `Function()` (3), so it must be addressed as `Object.getOwnPropertyNames(nameOfObjectToExamine)`.
-
-
-## Relationships
+> All roads lead (and end) to `Object.prototype`.    
+     
+      
+A very useful function for examination of an object's own properties (properties found on the object itself, not by following the prototype chain) is `getOwnPropertyNames()`. This method lives on function object `Function()` (3), so it must be addressed as `Object.getOwnPropertyNames(nameOfObjectToExamine)`.    
+     
+    
+## Relationships 
 
 Each constructor function is accompanied by a nameless object, which can be identified according to relationship with its constructor function. Each function has a `prototype` property pointing to its prototype object, and each prototype object has a `constructor` property pointing back to function.
 
@@ -119,7 +121,9 @@ f1(4); // 8
 var f2 = Function('n', 'return n+n');
 f2(4); // 8
 ```
-
+> Every time you create a new function, you end up with 2 objects: the function itself [object Function] and its prototype object [object Object].   
+    
+    
 
 **Array**   
 Whether a new array is created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (element d in the diagram) is prototype linked to `Array.prototype` (6). It is similar with other compound (sub)types.
