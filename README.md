@@ -110,8 +110,19 @@ A proper object (object Object) can be created in several ways:
 
 * Using object literal form `obj = {}`.
 
+
+**Function**   
+When the constructor function `Function` is used (with or without the `new` keyword) it alows for dynamically setting new function's parametars and body:
+```js
+var f1 = new Function('n', 'return n+n');
+f1(4); // 8
+var f2 = Function('n', 'return n+n');
+f2(4); // 8
+```
+
+
 **Array**   
-Whether a new array is created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (d) is prototype linked to `Array.prototype` (6). It is similar with other compound (sub)types.
+Whether a new array is created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (element d in the diagram) is prototype linked to `Array.prototype` (6). It is similar with other compound (sub)types.
 
 ```js
 var arr1 = new Array();
@@ -125,6 +136,19 @@ arr2.__proto__;
 arr3.__proto__;
 // [constructor: function, toString: function, join: function, pop: function…] (6)
 ```
+
+There's a special case when using Array constructor function with only one numeric parametar:
+```js
+var arr4 = new Array(3);
+// [undefined × 3]
+arr4.length;
+// 3
+var arr5 = new Array(3.14);
+// Uncaught RangeError: Invalid array length
+```
+This will only set the `length` property of the new array.
+
+
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
