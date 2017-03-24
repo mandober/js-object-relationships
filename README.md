@@ -97,33 +97,38 @@ unlinked;
 
 
 
-## Creation of new objects
+## Creation of new objects (subtypes)
 
+
+**Function**   
+
+Besides the usual ways (function declarations and function expressions), function can be created by calling constructor function `Function()`, with or without the `new` keyword. This allows for dynamically setting new function's parametars and body:
+```js
+var f1 = new Function('n', 'return n + n');
+f1(4); // 8
+var f2 = Function('n', 'return n + n');
+f2(4); // 8
+```   
+   
+> Every time you create a new function, you end up with 2 objects: the function itself [object Function] and its prototype object [object Object].   
+    
+   
 **Object**   
+
 A proper object (object Object) can be created in several ways:
 
-* When a new function is declared (a), its prototype object (b) is also created. Every function has a prototype/constructor relationship with its object. Function itself will be prototype linked to `Function.prototype`(2) object; its prototype object will be prototype linked to `Object.prototype`(1).
+* When a new function is created (a), its prototype object (b) is also created. Every function has a prototype/constructor relationship with its object. Function itself will be prototype linked to `Function.prototype`(2) object; its prototype object will be prototype linked to `Object.prototype`(1).
 
-* An object is created with constructor call to a user created function `var obj = new Fun()`(c). When created this way, that object gets prototype linked to function's prototype object (b).
+* From constructor call to a user's function `var obj = new Fun()`(c). When an object is created this way, it gets prototype linked to function's prototype object (b).
 
-* Calling the object constructor function `obj = new Object()` or just calling the constructor without the `new` keyword `obj = Object()`.
+* By calling constructor function Object() (with or without the `new` keyword):
+  `obj = new Object()`
+  `obj = Object()`
 
 * Using the function `Object.create()`.
 
 * Using object literal form `obj = {}`.
-
-
-**Function**   
-When the constructor function `Function` is used (with or without the `new` keyword) it alows for dynamically setting new function's parametars and body:
-```js
-var f1 = new Function('n', 'return n+n');
-f1(4); // 8
-var f2 = Function('n', 'return n+n');
-f2(4); // 8
-```
-> Every time you create a new function, you end up with 2 objects: the function itself [object Function] and its prototype object [object Object].   
-    
-    
+ 
 
 **Array**   
 Whether a new array is created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (element d in the diagram) is prototype linked to `Array.prototype` (6). It is similar with other compound (sub)types.
@@ -151,6 +156,31 @@ var arr5 = new Array(3.14);
 // Uncaught RangeError: Invalid array length
 ```
 This will only set the `length` property of the new array.
+
+
+**Date**   
+
+There is no date literal form, so a new date object must be created by calling the native constructor. If it is called without the `new` keyword, string representation of the current date is returned.
+```js
+var d1 = new Date();
+// (date object)
+var d2 = Date();
+// (string representation of the current date)
+```
+
+**RegExp**   
+
+Regular expressions have both, literal and constructed form. The latter can be used, with or without the `new` keyword, to dynamically define a regex pattern.
+```js
+var re1 = /.*/g
+var re2 = new RegExp(/.*/, "g")
+var re3 = RegExp(/.*/, "g")
+var str = 'abc';
+var re4 = new RegExp(str + '{3}', "g");//  /abc{3}/g
+```
+
+
+
 
 
 
