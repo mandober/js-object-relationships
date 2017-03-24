@@ -99,7 +99,7 @@ unlinked;
 
 A proper object (object Object) can be created in several ways:
 
-* When a (any) function is created (a), its prototype object (b) is also created. Every function has a prototype/constructor relationship with its object. Function itself will be prototype linked to `Function.prototype` object; its prototype object will be prototype linked to `Object.prototype`.
+* When a new function is declared (a), its prototype object (b) is also created. Every function has a prototype/constructor relationship with its object. Function itself will be prototype linked to `Function.prototype`(2) object; its prototype object will be prototype linked to `Object.prototype`(1).
 
 * An object is created with constructor call to a user created function `var obj = new Fun()`(c). When created this way, that object gets prototype linked to function's prototype object (b).
 
@@ -114,7 +114,7 @@ A proper object (object Object) can be created in several ways:
 
 ### **Array**
 
-Whether a new array s created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (d) is proto linked to `Array.prototype`. It is similar for other subtypes.
+Whether a new array is created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (d) is prototype linked to `Array.prototype` (6). It is similar with other compound (sub)types.
 
 ```js
 var arr1 = new Array();
