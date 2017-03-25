@@ -1,11 +1,16 @@
 # Relationships between objects in JS
 
-Diagram of relationships between (some) compound types in JS:
-
-
 <img src="https://github.com/mandober/js-object-relationships/blob/master/js-rel.jpg?raw=true" alt="JS Object Relationships">
+Diagram of relationships between compound types in JS
 
-Red fat arrows are `[[Prototype]]` i.e. `__proto__` links (properties).
+
+
+* [Prototype chain](#prototype-chain)
+* [Relationships](#relationships)
+* [Manipulating relationships](#manipulating-relationships)
+
+
+Types
 
 Complex or compound types are object, function, string, array, regexp, number, date, etc. In fact, all complex types are a subtypes of the type object. Every complex type has its eponymous constructor function:
 * `function Object()`
@@ -41,7 +46,7 @@ In fact, `__proto__` is not a property found on every object - it is located onl
 A very useful function for examination of an object's own properties (properties found on the object itself, not by following the prototype chain) is `getOwnPropertyNames()`. This method lives on function object `Function()` (3), so it must be addressed as `Object.getOwnPropertyNames(nameOfObjectToExamine)`.    
      
     
-## Relationships 
+## Relationships
 
 Each constructor function is accompanied by a nameless object, which can be identified according to relationship with its constructor function. Each function has a `prototype` property pointing to its prototype object, and each prototype object has a `constructor` property pointing back to function.
 
@@ -178,8 +183,6 @@ var re3 = RegExp(/.*/, "g")
 var str = 'abc';
 var re4 = new RegExp(str + '{3}', "g");//  /abc{3}/g
 ```
-
-
 
 
 
