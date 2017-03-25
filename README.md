@@ -1,16 +1,20 @@
-# Relationships between objects in JS
+# Relationships in JS
 
-<img src="https://github.com/mandober/js-object-relationships/blob/master/js-rel.jpg?raw=true" alt="JS Object Relationships">
-Diagram of relationships between compound types in JS
 
+<img src="https://github.com/mandober/js-object-relationships/blob/master/prototype-chain.jpg?raw=true" alt="Prototype chain">
+Diagram of Prototype chain in JS
 
 
 * [Prototype chain](#prototype-chain)
 * [Relationships](#relationships)
 * [Manipulating relationships](#manipulating-relationships)
+* [Making new objects](#making-new-objects)
+* [Standard built-in objects](#standard-built-in-objects)
+* [Compound types](#compound-types)
+* [References](#references)
 
 
-Types
+## Relationships between objects in JS
 
 Complex or compound types are object, function, string, array, regexp, number, date, etc. In fact, all complex types are a subtypes of the type object. Every complex type has its eponymous constructor function:
 * `function Object()`
@@ -101,8 +105,11 @@ unlinked;
 ```
 
 
+<img src="https://github.com/mandober/js-object-relationships/blob/master/js-rel.jpg?raw=true" alt="Object Relationships">
+Relationships between compound types
 
-## Creation of new objects (subtypes)
+
+## Making new objects
 
 
 **Function**   
@@ -510,8 +517,3 @@ Object.prototype.toString.call(Date.prototype);
 * https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch6.md
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
 
-
-<p>&nbsp;</p>
-<hr>
-<small>Relationships between objects in JS (March, 2017)</small>
-<p>&nbsp;</p>
