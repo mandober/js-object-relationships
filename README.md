@@ -18,14 +18,14 @@ There are 7 built-in types in JavaScript:
 * 1 compound (complex) type:    
   `object`
 
-This is an object in the broader sense; it has many subtypes, collectively called natives or [built-in objects](#https://www.ecma-international.org/ecma-262/7.0/#sec-well-known-intrinsic-objects). Commonly used built-ins are Object, Array, Date, RegExp, Math, Function. Function is a callable object; String, Symbol, Number and Boolean built-ins are rarely used directly, but they are fundamental when dealing with their primitive counterpairs ("boxing"); Global object is provided by the host environment.
+This is an object in the broader sense; it has many subtypes, collectively called natives or [built-in objects](https://www.ecma-international.org/ecma-262/7.0/#sec-well-known-intrinsic-objects). Commonly used built-ins are Object, Array, Date, RegExp, Math, Function. Function is a callable object; String, Symbol, Number and Boolean built-ins are rarely used directly, but they are fundamental when dealing with their primitive counterpairs ("boxing"); Global object is provided by the host environment.
 
 
 ## Built-in objects
 
 All built-in objects have corresponding constructor functions: `Object(), Function(), Array(), String(), Regexp()`, etc.
 
-All constructor function have an accompanying object - their prototype object, whose subtype corresponds to the name of the constructor function: `object Object, object Function, object Array, object String, object Regexp`, etc.
+All constructor function have an accompanying object - their prototype object, whose (sub)type corresponds to the name of the constructor function: `object Object, object Function, object Array, object String, object Regexp`, etc.
 
 
 ## Prototype chain
@@ -36,16 +36,50 @@ A link represents a hidden property of an object called `[[Prototype]]`. Public,
 
 Namely, if an object is queried for a property (`obj.propName`) and it doesn't have its own property by that name, its `[[Prototype]]` i.e. `__proto__` link is followed to the next object, which is queried for the same property, and so on, to the next linked object, until such property is found. Object `Object.prototype` (1) is the final link in the prototype chain and if it doesn't have that property, the search is over and `undefined` is returned. The same goes for both, properties and methods.
 
-In fact, `__proto__` is not a property found on every object - it is located only on `Object.prototype`(1) , but since `Object.prototype` is at the end of the prototype chain, all other objects have access to `__proto__` thanks to prototype chain.   
+In fact, `__proto__` is not a property found on any given object - it is located only on `Object.prototype`(1) , but since `Object.prototype` is at the end of the prototype chain, all other objects have access to `__proto__` thanks to prototype chain.   
      
 > All roads lead (and end) to `Object.prototype`.    
      
      
-<hr>
+## Object Exploration Tools
 
-A very useful function for examination of an object's own properties (properties found on the object itself, not by following the prototype chain) is `getOwnPropertyNames()`. This method lives on function object `Function()` (3), so it must be addressed as `Object.getOwnPropertyNames(nameOfObjectToExamine)`.    
+* **`__proto__`**     
+By using `__proto__` prototype chain can be examined. For example, function `Function()` links to `Function.prototype`(2) and it links to `Object.prototype`, which is the end of the prototype chain.   
+
+`Function() -> Function.prototype -> Object.prototype -> null`    
+```js
+Function.__proto__ === Function.prototype; // true
+Function.prototype.__proto__ === Object.prototype; // true
+Object.prototype.__proto__ === null; // true
+```
+<small>Note: The feedback is from: Chrome (v.57.0.2987.110 x64), Firefox (v.52.0.1 x64), Edge (v.14.14393), Node (v7.7.3)</small>
+
+
+* **`toString()`**     
+To identify the subtype of an object `toString()` method of `Object.prototype` can be borrowed. It is called as:
+`Object.prototype.toString.call(OBJ)`.
+
+```js
+Object.prototype.toString.call(Function); // "[object Function]"
+Object.prototype.toString.call(Function.prototype); // "[object Function]"
+```
+
+Since `Object.prototype` is at the end of prototype chain, this method is available to all objects, which means the name of the owning object (`Object.prototype`) can be left out:
+
+```js
+toString === Object.prototype.toString; // true
+toString.call(Object); // "[object Function]"
+toString.call(Object.prototype); // "[object Object]"
+```
+
+<small>The `call()` [method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call) calls a function with a given `this` value.</small>
+
+
+* **`getOwnPropertyNames()`**     
+This method is used to find out object's own properties (properties found on the object itself, not by following the prototype chain). This is a method of function `Object()`, so it must be addressed as `Object.getOwnPropertyNames(OBJ)`.    
     
     
+
 ## Relationships
 
 Each constructor function is accompanied by a nameless object, which can be identified according to relationship with its constructor function. Each function has a `prototype` property pointing to its prototype object, and each prototype object has a `constructor` property pointing back to function.
@@ -54,10 +88,6 @@ For example, `Object` function's (3) `prototype` points to *the* object, *the* t
 ```js
 Object === Object.prototype.constructor;
 // true
-Object.prototype.toString.call(Object);
-// "[object Object]"
-Object.prototype.toString.call(Object.prototype);
-// "[object Function]"
 ```
 
 Another special pair is constructor function `Function`(4) and function referred to as `Function.prototype`(2). What is special is that every constructor function (and any user created function) will have its proto link point to `Function.prototype`(2). And all constructor function's prototype objects will point to `Object.prototype`(1). So this is the only pair where a constructor function has a proto link pointing to its prototype function (`Function.prototype`).
