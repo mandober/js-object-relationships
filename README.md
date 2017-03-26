@@ -1,54 +1,50 @@
-# Relationships in JS
+# Relationships between Objects and Prototypes in JS
 
 
-<img src="https://github.com/mandober/js-object-relationships/blob/master/prototype-chain.jpg?raw=true" alt="Prototype chain">
-Diagram of Prototype chain in JS
-
-
+<img src="https://github.com/mandober/js-object-relationships/blob/master/prototype-chain.jpg?raw=true" alt="Diagram of Prototype chain in JS">
+<small>Prototype chain</small>
+       
+      
+* [Types](#types)
+* [Built-in objects](#built-in-objects)
 * [Prototype chain](#prototype-chain)
-* [Relationships](#relationships)
-* [Manipulating relationships](#manipulating-relationships)
-* [Making new objects](#making-new-objects)
-* [Standard built-in objects](#standard-built-in-objects)
-* [Compound types](#compound-types)
-* [References](#references)
+     
+     
+## Types
+
+There are 7 built-in types in JavaScript:
+* 6 primitives (primitive types):    
+  `string, number, boolean, symbol, null, undefined`
+* 1 compound (complex) type:    
+  `object`
+
+This is an object in the broader sense; it has many subtypes, collectively called natives or [built-in objects](#https://www.ecma-international.org/ecma-262/7.0/#sec-well-known-intrinsic-objects). Commonly used built-ins are Object, Array, Date, RegExp, Math, Function. Function is a callable object; String, Symbol, Number and Boolean built-ins are rarely used directly, but they are fundamental when dealing with their primitive counterpairs ("boxing"); Global object is provided by the host environment.
 
 
-## Relationships between objects in JS
+## Built-in objects
 
-Complex or compound types are object, function, string, array, regexp, number, date, etc. In fact, all complex types are a subtypes of the type object. Every complex type has its eponymous constructor function:
-* `function Object()`
-* `function Function()`
-* `function Array()`
-* `function String()`
-* `function Date()`
-* `function Regexp()`   
-etc.   
-and each constructor function has an accompanying object - its prototype object, whose subtype has the same name as the constructor function:
-* `"[object Object]"`
-* `"[object Function]"`
-* `"[object Array]"`
-* `"[object String]"`
-* `"[object Date]"`
-* `"[object Regexp]"`   
-etc.
+All built-in objects have corresponding constructor functions: `Object(), Function(), Array(), String(), Regexp()`, etc.
+
+All constructor function have an accompanying object - their prototype object, whose subtype corresponds to the name of the constructor function: `object Object, object Function, object Array, object String, object Regexp`, etc.
 
 
 ## Prototype chain
 
-Red fat arrows show the links between objects - these links make up the prototype chain.
+Red lines in the diagram show the links between objects - these links make up the prototype chain.
 
-A link is a hidden private property of an object known as `[[Prototype]]`. Although it was used for a long time, only now ES6 has standardized the public, addressable, version of this property named `__proto__`, which can be used to examine relationships between objects.
+A link represents a hidden property of an object called `[[Prototype]]`. Public, addressable, version of this property is called `__proto__` and it can be used to examine relationships between objects.
 
-Namely, if an object is queried for a property (`obj.propName`) and it doesn't have its own property by that name, its `[[Prototype]]` i.e. `__proto__` link is followed to the next object, which is queried for that property, and so on to the next linked object, until such property is found. Object `Object.prototype` (1) is the final link in the prototype chain and if it doesn't have that property, the search is over and `undefined` is returned. The same goes for both, properties and methods.
+Namely, if an object is queried for a property (`obj.propName`) and it doesn't have its own property by that name, its `[[Prototype]]` i.e. `__proto__` link is followed to the next object, which is queried for the same property, and so on, to the next linked object, until such property is found. Object `Object.prototype` (1) is the final link in the prototype chain and if it doesn't have that property, the search is over and `undefined` is returned. The same goes for both, properties and methods.
 
-In fact, `__proto__` is not a property found on every object - it is located only on `Object.prototype` (1) (and it is not really a property, but a pair of get/set methods), but since `Object.prototype` is at the end of the prototype chain, all other objects have access to `__proto__` property/method, just by following the prototype links.   
-
+In fact, `__proto__` is not a property found on every object - it is located only on `Object.prototype`(1) , but since `Object.prototype` is at the end of the prototype chain, all other objects have access to `__proto__` thanks to prototype chain.   
+     
 > All roads lead (and end) to `Object.prototype`.    
      
-      
-A very useful function for examination of an object's own properties (properties found on the object itself, not by following the prototype chain) is `getOwnPropertyNames()`. This method lives on function object `Function()` (3), so it must be addressed as `Object.getOwnPropertyNames(nameOfObjectToExamine)`.    
      
+<hr>
+
+A very useful function for examination of an object's own properties (properties found on the object itself, not by following the prototype chain) is `getOwnPropertyNames()`. This method lives on function object `Function()` (3), so it must be addressed as `Object.getOwnPropertyNames(nameOfObjectToExamine)`.    
+    
     
 ## Relationships
 
@@ -193,67 +189,12 @@ var re4 = new RegExp(str + '{3}', "g");//  /abc{3}/g
 
 
 
-
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
 
-# Standard built-in objects
-
-**Fundamental objects:**   
-`Object, Function, Boolean, Symbol, Number, Math, Date, String, RegExp`
-
-**Error objects:**   
-`Error, EvalError, InternalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError`
-
-**Indexed collections**   
-`Array, Int8Array, Uint8Array, Uint8ClampedArray, Int16Array, Uint16Array, Int32Array, Uint32Array, Float32Array, Float64Array`   
-These objects represent collections of data which are ordered by an index value. This includes (typed) arrays and array-like constructs.
-
-**Keyed collections**   
-`Map, Set, WeakMap, WeakSet`   
-These objects represent collections which use keys; these contain elements which are iterable in the order of insertion.
-
-**Vector collections**   
-`SIMD, SIMD.Float32x4, SIMD.Float64x2, SIMD.Int8x16, SIMD.Int16x8, SIMD.Int32x4, SIMD.Uint8x16, SIMD.Uint16x8, SIMD.Uint32x4, SIMD.Bool8x16, SIMD.Bool16x8, SIMD.Bool32x4, SIMD.Bool64x2`   
-SIMD vector data types are objects where data is arranged into lanes.
-
-**Structured data**   
-`ArrayBuffer, SharedArrayBuffer, Atomics, DataView, JSON`   
-These objects represent and interact with structured data buffers and data coded using JavaScript Object Notation (JSON).
-
-**Control abstraction objects**   
-`Promise, Generator, GeneratorFunction, AsyncFunction`
-
-**Reflection**   
-`Reflect, Proxy`
-
-**Internationalization**   
-`Intl, Intl.Collator, Intl.DateTimeFormat, Intl.NumberFormat`   
-Additions to the ECMAScript core for language-sensitive functionalities.
-
-**WebAssembly**   
-`WebAssembly, WebAssembly.Module, WebAssembly.Instance, WebAssembly.Memory, WebAssembly.Table, WebAssembly.CompileError, WebAssembly.LinkError, WebAssembly.RuntimeError`
-
-**Non-standard objects**   
-`Iterator, ParallelArray, StopIteration`   
-
-**Other objects**   
-`arguments`   
-
-
-
-
-
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-
-# Compound types: identify and list own properties
-
-Below are varius reports about compound subtypes and their own properties.
-
+## Built-ins: identify and list own properties
 
 ## Object
 
@@ -514,6 +455,7 @@ Object.prototype.toString.call(Date.prototype);
 
 # References
 
+* https://www.ecma-international.org/ecma-262/7.0/
 * https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch6.md
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
 
