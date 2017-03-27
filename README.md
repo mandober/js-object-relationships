@@ -138,19 +138,21 @@ Object === Object.prototype.constructor; // true
 > All prototype objects [[Prototype]] link to `Object.prototype`(1).
 
 Another special pair is the constructor function `Function` and its prototype object `Function.prototype`(2). What is special is that every constructor function (and any user created function) will [[Prototype]] link to `Function.prototype`(2). This is the only pair where a constructor function [[Prototype]] links to its prototype object.
+```js
+Function.__proto__ === Function.prototype; // true
+```
 
 > All functions* [[Prototype]] link to `Function.prototype`
 
 *except function `Function.prototype` which [[Prototype]] links to `Object.prototype`.
 
 
-```js
-Function.__proto__ === Function.prototype; // true
-```
+
 
 ## Manipulating relationships
 
-All said holds true only to the point when user code is introduced. Allow a user to interfere with JS and things quickly get out of hand: relationships between objects are not immutable. Commonly used methods for manipulating [[Prototype]] are `create()` and `setPrototypeOf()`, and even directly manipulating `__proto__` property (not recommended).
+All said holds true only to the point when user code is introduced. Allow a user to interfere with JS and things quickly get out of hand because relationships between objects are not immutable. Methods for manipulating [[Prototype]] are `create()` and `setPrototypeOf()`, and even directly manipulating `__proto__` property, which is [not recommended](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto).
+
 
 `Object.create()` creates a new object, [[Prototype]] linked to the specified object (or null). 
 `Object.setPrototypeOf()` method sets the [[Prototype]] of a source object to destination object (or null).
@@ -184,14 +186,19 @@ Object.setPrototypeOf(obj1, null);
 
 **Function**   
 
-Besides the usual ways (function declarations and function expressions), function can be created by calling constructor function `Function()`, with or without the `new` keyword. This allows for dynamically setting new function's parameters and body:
+Besides the usual ways (function declarations and function expressions), function can be created by calling constructor function `Function()`, with or without the `new` keyword. This allows for dynamically setting new function's parameters and body.
 ```js
-var f1 = new Function('n', 'return n + n');
-f1(4); // 8
-var f2 = Function('n', 'return n + n');
-f2(4); // 8
-```   
-   
+var params = ["x", "y"];
+var body = "return x + y";
+var f1 = new Function(params, body);
+f1; // function anonymous(x,y) {return x + y}
+f1(12,5); // 17
+
+var f2 = Function();
+f2; // function anonymous() {}
+```
+    
+    
 > Every time a function is created, actually 2 objects are created: the function itself (object Function) and its prototype object (object Object).
 
 When a new function (a) is created it is [[Prototype]] linked to its prototype object (b). Every function has a prototype/constructor relationship with its prototype object. So function itself will be prototype linked to `Function.prototype`(2) object and its prototype object will be [[Prototype]] linked to `Object.prototype`(1).
@@ -219,9 +226,8 @@ obj5; // Object {}
 ```
 
 
-
 **Array**   
-Whether a new array is created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (element d in the diagram) is prototype linked to `Array.prototype` (6). It is similar with other compound (sub)types.
+Whether a new array is created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (element d in the diagram) is prototype linked to `Array.prototype` (6).
 
 ```js
 var arr1 = new Array();
@@ -230,15 +236,17 @@ var arr2 = Array();
 // []
 var arr3 = [];
 // []
-arr1.__proto__;
-arr2.__proto__;
-arr3.__proto__;
+Object.getPrototypeOf(arr1);
+Object.getPrototypeOf(arr2);
+Object.getPrototypeOf(arr3);
+// chrome:
 // [constructor: function, toString: function, join: function, pop: function…] (6)
 ```
 
 There's a special case when using Array constructor function with only one numeric parameter:
 ```js
 var arr4 = new Array(3);
+// chrome:
 // [undefined × 3]
 arr4.length;
 // 3
@@ -270,6 +278,7 @@ var re3 = RegExp(/.*/, "g")
 var str = 'abc';
 var re4 = new RegExp(str + '{3}', "g");//  /abc{3}/g
 ```
+
 
 **String**   
 string is a primitive values, but String is an object (object String). String object is created by calling constructor function `String()`, with the `new` keyword. The `new` keyword is mandatory, otherwise the value is coerced to primitive string.
