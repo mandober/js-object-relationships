@@ -8,6 +8,8 @@
 * [Types](#types)
 * [Built-in objects](#built-in-objects)
 * [Prototype chain](#prototype-chain)
+* [Identifying Objects](#identifying-objects)
+* [Own Properties](#own-properties)
      
      
 ## Types
@@ -18,7 +20,7 @@ There are 7 built-in types in JavaScript:
 * 1 compound (complex) type:    
   `object`
 
-This is an object in the broader sense; it has many subtypes, collectively called natives or [built-in objects](https://www.ecma-international.org/ecma-262/7.0/#sec-well-known-intrinsic-objects). Commonly used built-ins are Object, Array, Date, RegExp, Math, Function. Function is a callable object; String, Symbol, Number and Boolean built-ins are rarely used directly, but they are fundamental when dealing with their primitive counterpairs ("boxing"); Global object is provided by the host environment.
+This is an object in the broader sense; it has many subtypes, collectively called natives or [built-in objects](https://www.ecma-international.org/ecma-262/7.0/#sec-well-known-intrinsic-objects). Commonly used built-ins are Object, Array, Date, RegExp, Math, Function. Function is a callable object; String, Symbol, Number and Boolean built-ins are rarely used directly, but they are fundamental when dealing with their primitive counterparts ("boxing"); Global object is provided by the host environment.
 
 
 ## Built-in objects
@@ -30,117 +32,154 @@ All constructor function have an accompanying object - their prototype object, w
 
 ## Prototype chain
 
-Red lines in the diagram show the links between objects - these links make up the prototype chain.
+Red lines in the diagram show the links between objects - these links make up the prototype chain. A link represents an internal property of an object called `[[Prototype]]`.
 
-A link represents a hidden property of an object called `[[Prototype]]`. Public, addressable, version of this property is called `__proto__` and it can be used to examine relationships between objects.
+While `[[Prototype]]` is an internal, private property that can't be referenced, its public, addressable, version is called `__proto__` and it can be used to examine relationships between objects. 
 
-Namely, if an object is queried for a property (`obj.propName`) and it doesn't have its own property by that name, its `[[Prototype]]` i.e. `__proto__` link is followed to the next object, which is queried for the same property, and so on, to the next linked object, until such property is found. Object `Object.prototype` (1) is the final link in the prototype chain and if it doesn't have that property, the search is over and `undefined` is returned. The same goes for both, properties and methods.
+If an object is queried for a property (`obj.propName`) and it doesn't have its own property by that name, its `[[Prototype]]` link is followed to the next object, which is queried for that property, and so on, to the next `[[Prototype]]` linked object. Object `Object.prototype` (1) is the final link in the prototype chain and if it doesn't have that property, the search is over and `undefined` is returned.
 
-In fact, `__proto__` is not a property found on any given object - it is located only on `Object.prototype`(1) , but since `Object.prototype` is at the end of the prototype chain, all other objects have access to `__proto__` thanks to prototype chain.   
-     
+In fact, `__proto__` is not really a *data property*, but an *accessor property* (a getter and a setter function) that exposes the internal [[Prototype]] link of an object. It is own property of the `Object.prototype` object and since this object is at the top of the prototype chain, every object has access to `__proto__` property thanks to the prototype chain.
+
 > All roads lead (and end) to `Object.prototype`.    
-     
-     
-## Object Exploration Tools
 
-* **`__proto__`**     
-By using `__proto__` prototype chain can be examined. For example, function `Function()` links to `Function.prototype`(2) and it links to `Object.prototype`, which is the end of the prototype chain.   
+For example, function `Function()` [[Prototype]] links to `Function.prototype`(2) and it links to `Object.prototype`(1), which is the end of the prototype chain:    
+`Function() -> Function.prototype -> Object.prototype -> null`
 
-`Function() -> Function.prototype -> Object.prototype -> null`    
 ```js
 Function.__proto__ === Function.prototype; // true
 Function.prototype.__proto__ === Object.prototype; // true
 Object.prototype.__proto__ === null; // true
 ```
-<small>Note: The feedback is from: Chrome (v.57.0.2987.110 x64), Firefox (v.52.0.1 x64), Edge (v.14.14393), Node (v7.7.3)</small>
 
-
-* **`toString()`**     
-To identify the subtype of an object `toString()` method of `Object.prototype` can be borrowed. It is called as:
-`Object.prototype.toString.call(OBJ)`.
-
+`Object.getPrototypeOf()` method also returns the prototype (i.e. the value of the internal [[Prototype]] property) of the specified object.
 ```js
-Object.prototype.toString.call(Function); // "[object Function]"
+Object.getPrototypeOf(Function)=== Function.prototype; // true
+Object.getPrototypeOf(Function.prototype) === Object.prototype; // true
+Object.getPrototypeOf(Object.prototype) === null; // true
+```
+
+
+## Identifying Objects
+
+All built-in objects have corresponding constructor functions: Object(), Function(), etc. These functions are easy to identify, since each has its own `name` property.
+```js
+Object.name; // "Object"
+Function.name; // "Function"
+Array.name; // "Array"
+```
+<small>Note: feedbacks are from: Chrome (v.57.0.2987.110 x64), Firefox (v.52.0.1 x64), Edge (v.14.14393 x64), Node (v7.7.3 x64)</small>
+
+Browser's console will return the name of each function as a primitive string (in double quotes) and Node's REPL will return the same (in single quotes). So it's easy to identify a function named "Function", or the one named "Object".
+
+Things are different when stating just the name of a constructor functions. In that case console will try to return representation of that object, but it'll still be easy to identify it. For example:
+```js
+Object;
+// chrome: function Object() { [native code] }
+// firefox: function Object()
+// edge: function Object() { [native code] }
+// node: [Function: Object]
+Function;
+// chrome: function Function() { [native code] }
+// firefox: function Function()
+// edge: function Function() { [native code] }
+// node: [Function: Function]
+```
+
+In JS, an object is a collection of properties; a property is an association between a name (or key) and a value. A property's value can be a primitive value, but it can also be a complex value i.e. an object.
+
+Constructor function has own property named `prototype` whose value is an object. Because of its significance, it may be easier if this object is viewed as a separate entity (like in the diagram). The problem is that this object doesn't have a name per se. Unlike function objects, prototype objects don't have a `name` property. Their name exist only in reference to their constructor function. For example, function `Function` and its prototype object `Function.prototype`.
+
+Therefor, identifying a prototype object is trickier,
+```js
+Object.prototype;
+// chrome: Object {__defineGetter__: function, __defineSetter__: function, hasOwnProperty: function, __lookupGetter__: function, __lookupSetter__: function…}
+// firefox: Object { , 15 more… }
+// edge: [object Object]{}
+// node: {}
+```
+as they can only be identified by their properties i.e. by recognizing at least some property names that are unique to each prototype object. It also helps that consoles' output can be clicked in order to show full list of object's properties.
+```js
+Function.prototype;
+// chrome: function () { [native code] }
+// firefox: function ()
+// edge: function() { [native code] }
+// node: [Function]
+```
+
+Subtype of prototype objects corresponds to the name of their constructor function:
+```js
+Object.prototype.toString.call(Object.prototype); // "[object Object]"
 Object.prototype.toString.call(Function.prototype); // "[object Function]"
+Object.prototype.toString.call(Array.prototype); // "[object Array]"
 ```
 
-Since `Object.prototype` is at the end of prototype chain, this method is available to all objects, which means the name of the owning object (`Object.prototype`) can be left out:
 
+## Own Properties
+
+`getOwnPropertyNames()` is a function that exposes names of object's own properties (properties found on the object itself, not by following the prototype chain). This method belongs to the `Object()` function and it returns an array of property names.
 ```js
-toString === Object.prototype.toString; // true
-toString.call(Object); // "[object Function]"
-toString.call(Object.prototype); // "[object Object]"
+Object.getOwnPropertyNames(Object.prototype);
+// [ '__defineGetter__', '__defineSetter__', 'hasOwnProperty', '__lookupGetter__', '__lookupSetter__', 'propertyIsEnumerable', 'constructor', 'toString', 'toLocaleString', 'valueOf', 'isPrototypeOf' '__proto__' ]
 ```
 
-<small>The `call()` [method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call) calls a function with a given `this` value.</small>
-
-
-* **`getOwnPropertyNames()`**     
-This method is used to find out object's own properties (properties found on the object itself, not by following the prototype chain). This is a method of function `Object()`, so it must be addressed as `Object.getOwnPropertyNames(OBJ)`.    
-    
-    
 
 ## Relationships
 
-Each constructor function is accompanied by a nameless object, which can be identified according to relationship with its constructor function. Each function has a `prototype` property pointing to its prototype object, and each prototype object has a `constructor` property pointing back to function.
+Each constructor function has a `prototype` property pointing to its prototype object, and each prototype object has a `constructor` property pointing back to its function.
 
-For example, `Object` function's (3) `prototype` points to *the* object, *the* top-of-the-chain, proper object `Object.prototype` (1). He points back to her:
+For example, object Function `Object` has a `prototype` property that points to *the object*, *the* top-of-the-chain, `Object.prototype`(1) object Object. He points back to her:
 ```js
-Object === Object.prototype.constructor;
-// true
+Object === Object.prototype.constructor; // true
 ```
 
-Another special pair is constructor function `Function`(4) and function referred to as `Function.prototype`(2). What is special is that every constructor function (and any user created function) will have its proto link point to `Function.prototype`(2). And all constructor function's prototype objects will point to `Object.prototype`(1). So this is the only pair where a constructor function has a proto link pointing to its prototype function (`Function.prototype`).
+> All prototype objects [[Prototype]] link to `Object.prototype`(1).
+
+Another special pair is the constructor function `Function` and its prototype object `Function.prototype`(2). What is special is that every constructor function (and any user created function) will [[Prototype]] link to `Function.prototype`(2). This is the only pair where a constructor function [[Prototype]] links to its prototype object.
+
+> All functions [[Prototype]] link to `Function.prototype`
 
 ```js
-Function === Function.prototype.constructor;
-// true
-Function.__proto__ === Function.prototype
-// true
-Object.prototype.toString.call(Function);
-// "[object Function]"
-Object.prototype.toString.call(Function.prototype);
-// "[object Function]"
+Function === Function.prototype.constructor; // true
+Function.__proto__ === Function.prototype; // true
 ```
 
-### Manipulating relationships
+## Manipulating relationships between objects
 
-All relationships between objects can be manipulated by a user. Common manipulation methods:
+All said holds true only to the point when user code is introduced. Allow a user to interfere with JS and things quickly get out of hand: relationships between objects are not immutable. Commonly used methods for manipulating [[Prototype]] are `create()` and `setPrototypeOf()`, and even directly manipulating `__proto__` property (not recommended).
 
-* `Object.create(pt [,propertiesObject])` creates a new object with the specified prototype object and properties.
-
-* `Object.setPrototypeOf(srcObj, destObj)` method sets the prototype (i.e. the internal [[Prototype]] property) of a source object to destination object (or null).
-
-* By manipulating `__proto__` property.
+`Object.create()` creates a new object, [[Prototype]] linked to the specified object (or null). 
+`Object.setPrototypeOf()` method sets the [[Prototype]] of a source object to destination object (or null).
 
 ```js
-var objProto = {a:1};
-var obj = {__proto__:objProto};
-obj.__proto__ === objProto; //true
+var obj1 = {a: 1};
+var obj2 = {__proto__: obj1};
+Object.getPrototypeOf(obj2) === obj1; //true
 
-// creates an object out of prototype chain:
+var obj3 = Object.create(obj1);
+Object.getPrototypeOf(obj3) === obj1; //true
+
+Object.setPrototypeOf(obj2, obj3);
+Object.getPrototypeOf(obj2) === obj3; //true
+
+// creates a new object removed from the prototype chain:
 var free = Object.create(null);
-// Object {} without any properties
 
-// unlinks existing object from prototype chain:
-var unlinked = {a:1,b:2,c:3};
-Object.setPrototypeOf(unlinked, null);
-unlinked;
-// Object {a: 1, b: 2, c: 3} 
-// only own properties; properties from prototype chain are no longer available.
+// removes existing object from the prototype chain:
+Object.setPrototypeOf(obj1, null);
 ```
+
 
 
 <img src="https://github.com/mandober/js-object-relationships/blob/master/js-rel.jpg?raw=true" alt="Object Relationships">
-Relationships between compound types
 
 
-## Making new objects
+
+## Creating new objects
 
 
 **Function**   
 
-Besides the usual ways (function declarations and function expressions), function can be created by calling constructor function `Function()`, with or without the `new` keyword. This allows for dynamically setting new function's parametars and body:
+Besides the usual ways (function declarations and function expressions), function can be created by calling constructor function `Function()`, with or without the `new` keyword. This allows for dynamically setting new function's parameters and body:
 ```js
 var f1 = new Function('n', 'return n + n');
 f1(4); // 8
@@ -148,25 +187,33 @@ var f2 = Function('n', 'return n + n');
 f2(4); // 8
 ```   
    
-> Every time you create a new function, you end up with 2 objects: the function itself [object Function] and its prototype object [object Object].   
+> Every time you create a new function, you end up with 2 objects: the function itself (object Function) and its prototype object (object Object).
+
+When a new function (a) is created it is [[Prototype]] linked to its prototype object (b). Every function has a prototype/constructor relationship with its object. Function itself will be prototype linked to `Function.prototype`(2) object; its prototype object will be prototype linked to `Object.prototype`(1).
     
-   
+    
 **Object**   
 
 A proper object (object Object) can be created in several ways:
 
-* When a new function is created (a), its prototype object (b) is also created. Every function has a prototype/constructor relationship with its object. Function itself will be prototype linked to `Function.prototype`(2) object; its prototype object will be prototype linked to `Object.prototype`(1).
+* From constructor call to a user's function `var obj1 = new Fun()`(c). When an object is created this way, it gets [[Prototype]] linked to function's prototype object (b).
 
-* From constructor call to a user's function `var obj = new Fun()`(c). When an object is created this way, it gets prototype linked to function's prototype object (b).
+* Using `create()` function: `var obj2 = Object.create()`. [[Prototype]] link of the new object can be set to specified object, passed in as a parameter.
 
-* By calling constructor function Object() (with or without the `new` keyword):
-  `obj = new Object()`
-  `obj = Object()`
+* By calling constructor function Object() (with or without the `new` keyword): `var obj3 = new Object()`.
 
-* Using the function `Object.create()`.
+* Using object literal form: `var obj4 = {}`.
 
-* Using object literal form `obj = {}`.
- 
+* Every function has [[Prototype]] link to its prototype object. This object can be kidnapped; new identity can be provided; any link to its constructor function can be erased.
+
+```js
+var f1 = function() {};
+obj5 = f1.prototype;
+delete obj5.constructor;
+obj5; // Object {}
+```
+
+
 
 **Array**   
 Whether a new array is created by using a constructor call (with or without the `new` keyword) or by using the array literal form, it all amounts to the same result: newly created array (element d in the diagram) is prototype linked to `Array.prototype` (6). It is similar with other compound (sub)types.
@@ -184,7 +231,7 @@ arr3.__proto__;
 // [constructor: function, toString: function, join: function, pop: function…] (6)
 ```
 
-There's a special case when using Array constructor function with only one numeric parametar:
+There's a special case when using Array constructor function with only one numeric parameter:
 ```js
 var arr4 = new Array(3);
 // [undefined × 3]
@@ -196,6 +243,7 @@ var arr5 = new Array(3.14);
 This will only set the `length` property of the new array.
 
 
+
 **Date**   
 
 There is no date literal form, so a new date object must be created by calling the native constructor. If it is called without the `new` keyword, string representation of the current date is returned.
@@ -205,6 +253,7 @@ var d1 = new Date();
 var d2 = Date();
 // (string representation of the current date)
 ```
+
 
 **RegExp**   
 
@@ -218,42 +267,46 @@ var re4 = new RegExp(str + '{3}', "g");//  /abc{3}/g
 ```
 
 
-
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
 
-## Built-ins: identify and list own properties
+## Lists of own Properties
 
-## Object
-
-### **Object()**
+These are global functions, that are invoked globally rather than on an object:
 
 ```js
-Object;
-// function Object() { [native code] } (3)
-Object.__proto__;
-// function () { [native code] } (2)
+    eval()
+    uneval()
+    isFinite()
+    isNaN()
+    parseFloat()
+    parseInt()
+    decodeURI()
+    decodeURIComponent()
+    encodeURI()
+    encodeURIComponent()
+```
+
+Other functions are invoked on an object that owns them.
+
+
+### Object
+
+#### **Object()**
+
+```js
 Object.getOwnPropertyNames(Object);
 // ["length", "name", "arguments", "caller", "prototype", "assign", "getOwnPropertyDescriptor", "getOwnPropertyDescriptors", "getOwnPropertyNames", "getOwnPropertySymbols", "is", "preventExtensions", "seal", "create", "defineProperties", "defineProperty", "freeze", "getPrototypeOf", "setPrototypeOf", "isExtensible", "isFrozen", "isSealed", "keys", "entries", "values"]
-Object.prototype.toString.call(Object);
-// "[object Function]"
 ```
 
 ### **Object.prototype**
 
 ```js
-Object.prototype;
-// Object {} (1)
-Object.prototype.__proto__;
-// null (i.e. end of prototype chain)
 Object.getOwnPropertyNames(Object.prototype);
 // ["__defineGetter__", "__defineSetter__", "hasOwnProperty", "__lookupGetter__", "__lookupSetter__", "propertyIsEnumerable", "__proto__", "constructor", "toString", "toLocaleString", "valueOf", "isPrototypeOf"]
-Object.prototype.toString.call(Object.prototype);
-// "[object Object]"
 ```
-
 
 
 ## Function
