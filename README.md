@@ -2,7 +2,6 @@
 
 
 <img src="https://github.com/mandober/js-object-relationships/blob/master/prototype-chain.jpg?raw=true" alt="Diagram of Prototype chain in JS">
-<small>Prototype chain</small>
        
       
 * [Types](#types)
@@ -93,7 +92,7 @@ In JS, an object is a collection of properties; a property is an association bet
 
 Constructor function has own property named `prototype` whose value is an object. Because of its significance, it may be easier if this object is viewed as a separate entity (like in the diagram). The problem is that this object doesn't have a name per se. Unlike function objects, prototype objects don't have a `name` property. Their name exist only in reference to their constructor function. For example, function `Function` and its prototype object `Function.prototype`.
 
-Therefor, identifying a prototype object is trickier,
+Therefore, identifying a prototype object is trickier,
 ```js
 Object.prototype;
 // chrome: Object {__defineGetter__: function, __defineSetter__: function, hasOwnProperty: function, __lookupGetter__: function, __lookupSetter__: function…}
@@ -140,10 +139,12 @@ Object === Object.prototype.constructor; // true
 
 Another special pair is the constructor function `Function` and its prototype object `Function.prototype`(2). What is special is that every constructor function (and any user created function) will [[Prototype]] link to `Function.prototype`(2). This is the only pair where a constructor function [[Prototype]] links to its prototype object.
 
-> All functions [[Prototype]] link to `Function.prototype`
+> All functions* [[Prototype]] link to `Function.prototype`
+
+*except function `Function.prototype` which [[Prototype]] links to `Object.prototype`.
+
 
 ```js
-Function === Function.prototype.constructor; // true
 Function.__proto__ === Function.prototype; // true
 ```
 
@@ -191,16 +192,16 @@ var f2 = Function('n', 'return n + n');
 f2(4); // 8
 ```   
    
-> Every time you create a new function, you end up with 2 objects: the function itself (object Function) and its prototype object (object Object).
+> Every time a function is created, actually 2 objects are created: the function itself (object Function) and its prototype object (object Object).
 
-When a new function (a) is created it is [[Prototype]] linked to its prototype object (b). Every function has a prototype/constructor relationship with its object. Function itself will be prototype linked to `Function.prototype`(2) object; its prototype object will be prototype linked to `Object.prototype`(1).
+When a new function (a) is created it is [[Prototype]] linked to its prototype object (b). Every function has a prototype/constructor relationship with its prototype object. So function itself will be prototype linked to `Function.prototype`(2) object and its prototype object will be [[Prototype]] linked to `Object.prototype`(1).
     
     
 **Object**   
 
 A proper object (object Object) can be created in several ways:
 
-* From constructor call to a user's function `var obj1 = new Fun()`(c). When an object is created this way, it gets [[Prototype]] linked to function's prototype object (b).
+* From constructor call to a user function `var obj1 = new Fun()`(c). When an object is created this way, it gets [[Prototype]] linked to function's prototype object (b).
 
 * Using `create()` function: `var obj2 = Object.create()`. [[Prototype]] link of the new object can be set to specified object, passed in as a parameter.
 
@@ -208,7 +209,7 @@ A proper object (object Object) can be created in several ways:
 
 * Using object literal form: `var obj4 = {}`.
 
-* Every function has [[Prototype]] link to its prototype object. This object can be kidnapped; new identity can be provided; any link to its constructor function can be erased.
+* Every function has [[Prototype]] link to its prototype object: this object can be kidnapped; new identity provided; any link to its past erased.
 
 ```js
 var f1 = function() {};
@@ -244,7 +245,7 @@ arr4.length;
 var arr5 = new Array(3.14);
 // Uncaught RangeError: Invalid array length
 ```
-This will only set the `length` property of the new array.
+Passing in exactly one integer will only set the `length` property of the new array.
 
 
 
@@ -269,6 +270,20 @@ var re3 = RegExp(/.*/, "g")
 var str = 'abc';
 var re4 = new RegExp(str + '{3}', "g");//  /abc{3}/g
 ```
+
+**String**   
+string is a primitive values, but String is an object (object String). String object is created by calling constructor function `String()`, with the `new` keyword. The `new` keyword is mandatory, otherwise the value is coerced to primitive string.
+```js
+var str1 = new String("abc");
+str1; String {0: "a", 1: "b", 2: "c", length: 3, [[PrimitiveValue]]: "abc"}
+
+var str2 = String(12);
+str2; // "12"
+```
+
+
+
+
 
 
 <p>&nbsp;</p>
