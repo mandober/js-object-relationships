@@ -27,7 +27,6 @@ There are 7 built-in types in JavaScript:
 
 This is an object in the broader sense; it has many subtypes, collectively called natives or [built-in objects](https://www.ecma-international.org/ecma-262/7.0/#sec-well-known-intrinsic-objects). Commonly used built-ins are Object, Array, Date, RegExp, Math, Function. Function is a callable object; String, Symbol, Number and Boolean built-ins are rarely used directly, but they are fundamental when dealing with their primitive counterparts ("boxing"); Global object is provided by the host environment.
 
-
 ## Built-in objects
 
 All built-in objects have corresponding constructor functions: `Object(), Function(), Array(), String(), Regexp()`, etc.
@@ -282,16 +281,16 @@ var re4 = new RegExp(str + '{3}', "g");//  /abc{3}/g
 These are global functions, that are invoked globally rather than on an object:
 
 ```js
-    eval()
-    uneval()
-    isFinite()
-    isNaN()
-    parseFloat()
-    parseInt()
-    decodeURI()
-    decodeURIComponent()
-    encodeURI()
-    encodeURIComponent()
+eval()
+uneval()
+isFinite()
+isNaN()
+parseFloat()
+parseInt()
+decodeURI()
+decodeURIComponent()
+encodeURI()
+encodeURIComponent()
 ```
 
 Other functions are invoked on an object that owns them.
@@ -301,30 +300,30 @@ Other functions are invoked on an object that owns them.
 
 ```js
 Object.getOwnPropertyNames(Object);
-// ["length", "name", "arguments", "caller", "prototype", "assign", "getOwnPropertyDescriptor", "getOwnPropertyDescriptors", "getOwnPropertyNames", "getOwnPropertySymbols", "is", "preventExtensions", "seal", "create", "defineProperties", "defineProperty", "freeze", "getPrototypeOf", "setPrototypeOf", "isExtensible", "isFrozen", "isSealed", "keys", "entries", "values"]
+["length", "name", "arguments", "caller", "prototype", "assign", "getOwnPropertyDescriptor", "getOwnPropertyDescriptors", "getOwnPropertyNames", "getOwnPropertySymbols", "is", "preventExtensions", "seal", "create", "defineProperties", "defineProperty", "freeze", "getPrototypeOf", "setPrototypeOf", "isExtensible", "isFrozen", "isSealed", "keys", "entries", "values"]
 
 Object.getOwnPropertyNames(Object.prototype);
-// ["__defineGetter__", "__defineSetter__", "hasOwnProperty", "__lookupGetter__", "__lookupSetter__", "propertyIsEnumerable", "__proto__", "constructor", "toString", "toLocaleString", "valueOf", "isPrototypeOf"]
+["__defineGetter__", "__defineSetter__", "hasOwnProperty", "__lookupGetter__", "__lookupSetter__", "propertyIsEnumerable", "__proto__", "constructor", "toString", "toLocaleString", "valueOf", "isPrototypeOf"]
 ```
 
 ## Function
 
 ```js
 Object.getOwnPropertyNames(Function);
-// ["length", "name", "arguments", "caller", "prototype"]
+["length", "name", "arguments", "caller", "prototype"]
 
 Object.getOwnPropertyNames(Function.prototype);
-// ["length", "name", "arguments", "caller", "apply", "bind", "call", "toString", "constructor"]
+["length", "name", "arguments", "caller", "apply", "bind", "call", "toString", "constructor"]
 ```
 
 ## Array
 
 ```js
 Object.getOwnPropertyNames(Array);
-// ["length", "name", "arguments", "caller", "prototype", "isArray", "from", "of"]
+["length", "name", "arguments", "caller", "prototype", "isArray", "from", "of"]
 
 Object.getOwnPropertyNames(Array.prototype);
-// ["length", "constructor", "toString", "toLocaleString", "join", "pop", "push", "reverse", "shift", "unshift", "slice", "splice", "sort", "filter", "forEach", "some", "every", "map", "indexOf", "lastIndexOf", "reduce", "reduceRight", "copyWithin", "find", "findIndex", "fill", "includes", "keys", "entries", "concat"]
+["length", "constructor", "toString", "toLocaleString", "join", "pop", "push", "reverse", "shift", "unshift", "slice", "splice", "sort", "filter", "forEach", "some", "every", "map", "indexOf", "lastIndexOf", "reduce", "reduceRight", "copyWithin", "find", "findIndex", "fill", "includes", "keys", "entries", "concat"]
 ```
 
 
@@ -332,10 +331,10 @@ Object.getOwnPropertyNames(Array.prototype);
 
 ```js
 Object.getOwnPropertyNames(String);
-// ["length", "name", "arguments", "caller", "prototype", "fromCharCode", "fromCodePoint", "raw"]
+["length", "name", "arguments", "caller", "prototype", "fromCharCode", "fromCodePoint", "raw"]
 
 Object.getOwnPropertyNames(String.prototype);
-// ["length", "constructor", "charAt", "charCodeAt", "endsWith", "includes", "indexOf", "lastIndexOf", "localeCompare", "normalize", "substr", "substring", "startsWith", "toString", "trim", "trimLeft", "trimRight", "valueOf", "codePointAt", "concat", "match", "repeat", "replace", "search", "slice", "split", "toLowerCase", "toLocaleLowerCase", "toUpperCase", "toLocaleUpperCase", "link", "anchor", "fontcolor", "fontsize", "big", "blink", "bold", "fixed", "italics", "small", "strike", "sub", "sup", "padStart", "padEnd"]
+["length", "constructor", "charAt", "charCodeAt", "endsWith", "includes", "indexOf", "lastIndexOf", "localeCompare", "normalize", "substr", "substring", "startsWith", "toString", "trim", "trimLeft", "trimRight", "valueOf", "codePointAt", "concat", "match", "repeat", "replace", "search", "slice", "split", "toLowerCase", "toLocaleLowerCase", "toUpperCase", "toLocaleUpperCase", "link", "anchor", "fontcolor", "fontsize", "big", "blink", "bold", "fixed", "italics", "small", "strike", "sub", "sup", "padStart", "padEnd"]
 ```
 
 
@@ -343,10 +342,10 @@ Object.getOwnPropertyNames(String.prototype);
 
 ```js
 Object.getOwnPropertyNames(Number);
-// ["length", "name", "arguments", "caller", "prototype", "isFinite", "isInteger", "isNaN", "isSafeInteger", "parseFloat", "parseInt", "MAX_VALUE", "MIN_VALUE", "NaN", "NEGATIVE_INFINITY", "POSITIVE_INFINITY", "MAX_SAFE_INTEGER", "MIN_SAFE_INTEGER", "EPSILON"]
+["length", "name", "arguments", "caller", "prototype", "isFinite", "isInteger", "isNaN", "isSafeInteger", "parseFloat", "parseInt", "MAX_VALUE", "MIN_VALUE", "NaN", "NEGATIVE_INFINITY", "POSITIVE_INFINITY", "MAX_SAFE_INTEGER", "MIN_SAFE_INTEGER", "EPSILON"]
 
 Object.getOwnPropertyNames(Number.prototype);
-// ["constructor", "toExponential", "toFixed", "toPrecision", "toString", "valueOf", "toLocaleString"]
+["constructor", "toExponential", "toFixed", "toPrecision", "toString", "valueOf", "toLocaleString"]
 ```
 
 
@@ -354,10 +353,10 @@ Object.getOwnPropertyNames(Number.prototype);
 
 ```js
 Object.getOwnPropertyNames(Boolean);
-// ["length", "name", "arguments", "caller", "prototype"]
+["length", "name", "arguments", "caller", "prototype"]
 
 Object.getOwnPropertyNames(Boolean.prototype);
-// ["constructor", "toString", "valueOf"]
+["constructor", "toString", "valueOf"]
 ```
 
 
@@ -366,10 +365,10 @@ Object.getOwnPropertyNames(Boolean.prototype);
 
 ```js
 Object.getOwnPropertyNames(RegExp);
-// ["length", "name", "arguments", "caller", "prototype", "input", "$_", "lastMatch", "$&", "lastParen", "$+", "leftContext", "$`", "rightContext", "$'", "$1", "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9"]
+["length", "name", "arguments", "caller", "prototype", "input", "$_", "lastMatch", "$&", "lastParen", "$+", "leftContext", "$`", "rightContext", "$'", "$1", "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9"]
 
 Object.getOwnPropertyNames(RegExp.prototype);
-// ["constructor", "exec", "flags", "global", "ignoreCase", "multiline", "source", "sticky", "unicode", "compile", "toString", "test"]
+["constructor", "exec", "flags", "global", "ignoreCase", "multiline", "source", "sticky", "unicode", "compile", "toString", "test"]
 ```
 
 
@@ -377,10 +376,10 @@ Object.getOwnPropertyNames(RegExp.prototype);
 
 ```js
 Object.getOwnPropertyNames(Date);
-// ["length", "name", "arguments", "caller", "prototype", "now", "parse", "UTC"]
+["length", "name", "arguments", "caller", "prototype", "now", "parse", "UTC"]
 
 Object.getOwnPropertyNames(Date.prototype);
-// ["constructor", "toString", "toDateString", "toTimeString", "toISOString", "toUTCString", "toGMTString", "getDate", "setDate", "getDay", "getFullYear", "setFullYear", "getHours", "setHours", "getMilliseconds", "setMilliseconds", "getMinutes", "setMinutes", "getMonth", "setMonth", "getSeconds", "setSeconds", "getTime", "setTime", "getTimezoneOffset", "getUTCDate", "setUTCDate", "getUTCDay", "getUTCFullYear", "setUTCFullYear", "getUTCHours", "setUTCHours", "getUTCMilliseconds", "setUTCMilliseconds", "getUTCMinutes", "setUTCMinutes", "getUTCMonth", "setUTCMonth", "getUTCSeconds", "setUTCSeconds", "valueOf", "getYear", "setYear", "toJSON", "toLocaleString", "toLocaleDateString", "toLocaleTimeString"]
+["constructor", "toString", "toDateString", "toTimeString", "toISOString", "toUTCString", "toGMTString", "getDate", "setDate", "getDay", "getFullYear", "setFullYear", "getHours", "setHours", "getMilliseconds", "setMilliseconds", "getMinutes", "setMinutes", "getMonth", "setMonth", "getSeconds", "setSeconds", "getTime", "setTime", "getTimezoneOffset", "getUTCDate", "setUTCDate", "getUTCDay", "getUTCFullYear", "setUTCFullYear", "getUTCHours", "setUTCHours", "getUTCMilliseconds", "setUTCMilliseconds", "getUTCMinutes", "setUTCMinutes", "getUTCMonth", "setUTCMonth", "getUTCSeconds", "setUTCSeconds", "valueOf", "getYear", "setYear", "toJSON", "toLocaleString", "toLocaleDateString", "toLocaleTimeString"]
 ```
 
 
