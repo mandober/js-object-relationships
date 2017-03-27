@@ -330,7 +330,7 @@ Object.getOwnPropertyNames(Object.prototype);
 ["__defineGetter__", "__defineSetter__", "hasOwnProperty", "__lookupGetter__", "__lookupSetter__", "propertyIsEnumerable", "__proto__", "constructor", "toString", "toLocaleString", "valueOf", "isPrototypeOf"]
 ```
 
-## Function
+### Function
 
 ```js
 Object.getOwnPropertyNames(Function);
@@ -340,7 +340,7 @@ Object.getOwnPropertyNames(Function.prototype);
 ["length", "name", "arguments", "caller", "apply", "bind", "call", "toString", "constructor"]
 ```
 
-## Array
+### Array
 
 ```js
 Object.getOwnPropertyNames(Array);
@@ -351,7 +351,7 @@ Object.getOwnPropertyNames(Array.prototype);
 ```
 
 
-## String
+### String
 
 ```js
 Object.getOwnPropertyNames(String);
@@ -362,7 +362,7 @@ Object.getOwnPropertyNames(String.prototype);
 ```
 
 
-## Number
+### Number
 
 ```js
 Object.getOwnPropertyNames(Number);
@@ -373,7 +373,7 @@ Object.getOwnPropertyNames(Number.prototype);
 ```
 
 
-## Boolean
+### Boolean
 
 ```js
 Object.getOwnPropertyNames(Boolean);
@@ -384,7 +384,7 @@ Object.getOwnPropertyNames(Boolean.prototype);
 ```
 
 
-## RegExp
+### RegExp
 
 
 ```js
@@ -396,7 +396,7 @@ Object.getOwnPropertyNames(RegExp.prototype);
 ```
 
 
-## Date
+### Date
 
 ```js
 Object.getOwnPropertyNames(Date);
@@ -405,6 +405,44 @@ Object.getOwnPropertyNames(Date);
 Object.getOwnPropertyNames(Date.prototype);
 ["constructor", "toString", "toDateString", "toTimeString", "toISOString", "toUTCString", "toGMTString", "getDate", "setDate", "getDay", "getFullYear", "setFullYear", "getHours", "setHours", "getMilliseconds", "setMilliseconds", "getMinutes", "setMinutes", "getMonth", "setMonth", "getSeconds", "setSeconds", "getTime", "setTime", "getTimezoneOffset", "getUTCDate", "setUTCDate", "getUTCDay", "getUTCFullYear", "setUTCFullYear", "getUTCHours", "setUTCHours", "getUTCMilliseconds", "setUTCMilliseconds", "getUTCMinutes", "setUTCMinutes", "getUTCMonth", "setUTCMonth", "getUTCSeconds", "setUTCSeconds", "valueOf", "getYear", "setYear", "toJSON", "toLocaleString", "toLocaleDateString", "toLocaleTimeString"]
 ```
+
+### Symbol
+
+```js
+Object.getOwnPropertyNames(Symbol);
+["length", "name", "arguments", "caller", "prototype", "for", "keyFor", "hasInstance", "isConcatSpreadable", "iterator", "match", "replace", "search", "species", "split", "toPrimitive", "toStringTag", "unscopables"]
+
+Object.getOwnPropertyNames(Symbol.prototype);
+["constructor", "toString", "valueOf"]
+```
+
+
+### Math
+
+```js
+Object.getOwnPropertyNames(Math);
+["abs", "acos", "acosh", "asin", "asinh", "atan", "atanh", "atan2", "ceil", "cbrt", "expm1", "clz32", "cos", "cosh", "exp", "floor", "fround", "hypot", "imul", "log", "log1p", "log2", "log10", "max", "min", "pow", "random", "round", "sign", "sin", "sinh", "sqrt", "tan", "tanh", "trunc", "E", "LN10", "LN2", "LOG10E", "LOG2E", "PI", "SQRT1_2", "SQRT2"]
+```
+
+
+### JSON
+```js
+Object.getOwnPropertyNames(JSON);
+["parse", "stringify"]
+```
+
+
+### Error
+
+```js
+Object.getOwnPropertyNames(Error);
+["length", "name", "arguments", "caller", "prototype", "captureStackTrace", "stackTraceLimit"]
+
+Object.getOwnPropertyNames(Error.prototype);
+["name", "message", "constructor", "toString"]
+```
+
+
 
 
 <p>&nbsp;</p>
