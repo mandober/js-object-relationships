@@ -26,7 +26,7 @@ Built-in objects have corresponding constructor functions: `Object`, `Function`,
 All of these constructor functions have a prototype: `Object.prototype`, `Function.prototype`, `Array.prototype`, `Regexp.prototype`, etc.
 
 
-### Constructor functions and their prototypes
+### Constructors and prototypes
 
 Constructor functions, being objects, have properties. One of them is a special property named `prototype` that references an object - function's prototype object. In turn, the prototype object itself has a special property named `constructor` that references back the constructor function.
 
@@ -39,20 +39,23 @@ When referring to a particular method, for example a method found on the Array f
 
 ### Prototype Chain
 
-All objects have another special property that allows them to access properties that are found on other objects. This is a internal property accessible only to JS engine, known as `[[Prototype]]` (internal properties are usually denoted in double brackets). Its public, externally accessible, version is named `__proto__`.
+All objects have access to their own properties, but moreover, they can also access properties found on other objects. This mechanism is implemented through a special internal (accessible only to JS engine) property called `[[Prototype]]` (internal properties are usually denoted in double brackets). ES6 has standardized a public, externally accessible, version of this property, `__proto__`. 
 
-![Prototype Chain][pic1]
-*Diagram 1: Prototype Chain*
 
-The diagram shows some common constructor functions and their prototypes. Thick red lines represent the links between objects i.e. `[[Prototype]]` links (or `__proto__` references) . These links make up the prototype chain.
+![Prototype Chain][pic1]    
+*Diagram 1: JS engine’s “looking busy” screensaver*
 
-In a way, prototype chain can be viewed as collection of all the Prototype links, or, more specifically, as prototype chain of a given object. For example, prototype chain starting with `Function` function, continues onto `Function.prototype` and then to `Object.prototype`.
+Diagram shows some common constructor functions and their prototypes. Thick red lines represent `[[Prototype]]` links i.e. `__proto__` references . These links make up the prototype chain.
+
+*(Proto)typical JS naming convention: there's a `prototype` property that references prototype objects and internal [[Prototype]] property along with  public `__proto__` property that comprises the prototype chain. Warning: these two refer to very different objects.*
+
+In a way, prototype chain can be viewed as collection of all the [[Prototype]] links, or, more specifically, as a prototype chain of a given object. For example, prototype chain of `Function` function, starts with the function itself, continues to `Function.prototype` and then ends at `Object.prototype`.
 
 `Object.prototype` is the final link in the prototype chain , it terminates the prototype chain by Prototype-linking to `null`.
 
-Prototype chain is traversed every time an object (array, function, object, etc) is queried for a property; if an object doesn't have such property, the search will continue, by following the Prototype links, to the next object. Finally, if `Object.prototype`, which is always at the end of any object's prototype chain, doesn't have such property, the search is over (and `undefined` is returned).
-
 > All roads lead to `Object.prototype`    
+
+Prototype chain is traversed every time an object (array, function, object, etc) is queried for a property; if an object doesn't have such property, the search will continue, by following the Prototype links, to the next object. Finally, if `Object.prototype`, which is always at the end of any object's prototype chain, doesn't have such property, the search is over (and `undefined` is returned).
 
 This is why all object have access to properties (methods) found on `Object.prototype` like `toString()`, `valueOf()`, `hasOwnProperty()`, `propertyIsEnumerable()`, etc.
 
@@ -63,51 +66,53 @@ All said is true for initial JS environment, before any  user code is executed -
 
 Constructor function, like all functions have a proper name (a name as a string) so they are easily recognized in the output of various JS host environments.
 
+![Identifying objects][pic2]    
+*Function, Object, prototypes, properties*
+
 The problem is recognizing their prototype objects as they don't have a name - they are only referred to in relation to their constructor function, e.g. `Object.prototype` object. JS host environments will have different representations for them.
 
-```js
-Object.name; // "Object"
-
-Object;
-/*
-Firefox (v.53) will output: function Object()
-Node (v.7.9.0) will output: [Function: Object]
-Chrome Canary (v.60) will output: function Object() { [native code] }
-*/
-
-Object.prototype;
-// (Node): {}
-// (Firefox): Object { , 15 more… }
-// (Chrome): Object {..., valueOf: function, ...}
-```
 Conveniently, browsers' output is clickable, which displays all object's properties - knowing what (prototype) object contains which properties is a way to distinguish them.
 
-![Identifying objects][pic2]
-*Diagram 2: Identifying objects by their methods*
 
+## Creating new objects
 
-## Object and Function
+### Objects and Functions
 
-`Object` and `Function` natives are the most fundamental builtins as they are at the top of the prototype chain. Similar to objects that all have `Object.prototype` in their PC, all functions have `Function.prototype` in theirs. `Function.prototype` itself is Prototype linked to `Object.prototype`.
+`Object` and `Function` natives are the most fundamental builtins; their prototype objects are at the top of the prototype chain; former sits on the top of a prototype chain, while latter is in the prototype chain of all functions, including constructor functions and user created ones.
 
-![Object and Function][pic3]
-*Diagram 3: Object and Function*
+![Object and Function][pic3]   
+*Initial state*
 
-`Object` constructor function is used to creates object wrappers (e.g. given a string parameter, it will wrap the string into a `String` object), so creating new objects is better done using some other method, like literal form.
+`Object` constructor function can create various subtypes of the general object type; it can construct new "proper" object, but it is mostly creates wrapper objects for different types (for example, if its argument is a string parameter, it will wrap the string, creating a `String` object).
 
-Constructor function `Function` can be constructor-called to create new function, but this is not common; a function is better off defined using function declarations or function expression.
+![Creating new objects][pic4]    
+*Creating new objects using object literal*
 
+Diagram shows creation of new object (yellow entity) and the resulting prototype chain: whether a new object is created with a constructor call, or by using its literal form, the new object will be [[Prototype]] linked to `Object.prototype`.
 
-### Creating new objects
+```js
+// make an object using literal notation:
+var obj1 = {a:1, b:2};
+// which amount to the same as:
+var obj1 = new Object(); 
+obj1.a = 1;
+obj1.b = 2;
 
+// quasi OO style:
+function Person(f, l) {
+  this.f = f;
+  this.l = l;
+}
+var jack = new Person("jack", "bauer");
+```
+Frequently used pattern for creating new object(s) is to define a function and constructor call it. In the code block above, first a new function is defined, then it is constructor called (with the `new` keyword), resulting in a new object (called 'jack').
 
-Functions are often used as constructors for objects
+In this scenario, resulting object will have a different [[Prototype]] linkage than an object created using literal notation. Resulting prototype chain is shown below:
 
-![Creating new objects][pic4]
-*Diagram 4: Creating new objects*
+![pic5]    
+*Creating a new object via constructor call*
 
-
-
+Instantiated object ('jack') will be [[Prototype]] linked to the prototype object of the constructor function ('Person.prototype').
 
 
 
@@ -115,8 +120,8 @@ Functions are often used as constructors for objects
 
 ---
 [link1]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
-
 [pic1]: diagrams/01_prototype-chain.png
 [pic2]: diagrams/02_methods.png
 [pic3]: diagrams/03_object-and-function.png
-[pic4]: diagrams/04_new-objects.png
+[pic4]: diagrams/04_object-literal.png
+[pic5]: diagrams/05_object-construction-call.png
